@@ -135,7 +135,7 @@
     <h1>Fluxograma de Decisão</h1>
     <div class="nav-buttons">
         <button class="btn-nav" id="btnFormatos">≡ Ver Passos</button>
-        <a href="https://25fluxograma-playbook.github.io/formulario/" class="btn-nav btn-registro">📋 Registrar Incidente</a>
+        <a href="https://25fluxograma-playbook.github.io/formulario/" class="btn-nav btn-registro"> Registrar Incidente</a>
     </div>
   </header>
 
@@ -148,41 +148,74 @@
   <div class="formatos-menu" id="formatosMenu">
     <h2 style="margin-top:0; border-bottom: 2px solid #666; padding-bottom: 10px;">Guia de Execução</h2>
 
-    <div class="step-box">
-      <h3>1. FASE DE DETECÇÃO</h3>
-      <ul>
-        <li>Alerta SIEM / Logon Suspeito identificado.</li>
-        <li>Bloqueio preventivo e encerramento de sessões.</li>
-        <li>Coleta de evidências voláteis (IP e Dispositivo).</li>
-      </ul>
-    </div>
+  <div class="step-box">
+  <h3>1. DETECÇÃO INICIAL</h3>
+  <p class="step-description">Serve para identificar rapidamente sinais de comprometimento da conta, permitindo uma resposta imediata para minimizar danos.</p>
+  <p class="step-subinfo">(1.1 a 1.5) Esses passos auxiliam na identificação precoce do incidente, bloqueando o acesso não autorizado, preservando evidências essenciais para investigação e monitorando tentativas suspeitas para evitar novas invasões.</p>
+  <ul>
+    <li><strong>1.1 Alerta de comprometimento de Conta</strong> – Detecta o possível início do incidente, acionando o processo de resposta.</li>
+    <li><strong>1.2 Bloqueio imediato da conta</strong> – Impede o uso continuado da conta comprometida, limitando o alcance do ataque.</li>
+    <li><strong>1.3 Forçar logout de sessões ativas</strong> – Encerra acessos ativos que podem estar sendo usados pelo invasor.</li>
+    <li><strong>1.4 Preservar evidências de autenticação</strong> – Garante que informações críticas para análise forense sejam mantidas intactas.</li>
+    <li><strong>1.5 Monitorar tentativas de login</strong> – Permite identificar tentativas adicionais de acesso não autorizado.</li>
+  </ul>
+</div>
 
-    <div class="step-box">
-      <h3>2. TRIAGEM E RISCO</h3>
-      <ul>
-        <li>Avaliar se a conta possui privilégios administrativos.</li>
-        <li>Confirmar se houve acesso a dados sensíveis.</li>
-        <li>Notificar o proprietário da conta para validação.</li>
-      </ul>
-    </div>
+<div class="step-box">
+  <h3>2. AVALIAÇÃO DE RISCO</h3>
+  <p class="step-description">Serve para avaliar o impacto e o risco associado ao incidente para definir as ações mais adequadas de contenção e mitigação.</p>
+  <p class="step-subinfo">(2.1 a 2.4) Esses passos ajudam a entender a gravidade do incidente, o potencial de propagação e a necessidade de suspender ou não a conta, além de garantir comunicação adequada com os responsáveis.</p>
+  <ul>
+    <li><strong>2.1 Avaliar impacto e privilégio da conta</strong> – Determina o potencial dano que o comprometimento pode causar.</li>
+    <li><strong>2.2 Risco de propagação imediata?</strong> – Avalia se o incidente pode se espalhar rapidamente, influenciando a decisão de suspender a conta.</li>
+    <ul class="sublist">
+      <li><strong>2.2(a) Manter a conta suspensa</strong> – Contém o incidente evitando sua expansão.</li>
+      <li><strong>2.2(b) Não suspender a conta</strong> – Evita interrupções desnecessárias quando o risco é baixo.</li>
+      <li><strong>2.2(c) Reset imediato de credenciais</strong> – Restaura a segurança da conta comprometida.</li>
+    </ul>
+    <li><strong>2.3 Notificar responsável pela conta</strong> – Garante que o dono da conta esteja ciente e possa colaborar na resolução.</li>
+    <li><strong>2.4 Aguardar validação e feedback DSinf</strong> – Permite que a equipe de segurança valide as ações e ajuste o plano conforme necessário.</li>
+  </ul>
+</div>
 
-    <div class="step-box">
-      <h3>3. RESPOSTA TÉCNICA</h3>
-      <ul>
-        <li>Redefinição de senha e reset de MFA.</li>
-        <li>Verificação de regras de encaminhamento de e-mail.</li>
-        <li>Revogação de chaves de API ou sessões persistentes.</li>
-      </ul>
-    </div>
+<div class="step-box">
+  <h3>3. COMUNICAÇÃO E INVESTIGAÇÃO</h3>
+  <p class="step-description">Serve para investigar o incidente, reforçar controles e decidir sobre a resolução ou manutenção da suspensão da conta.</p>
+  <p class="step-subinfo">(3.1 a 3.5) Esses passos asseguram que o incidente seja devidamente analisado, que os controles sejam fortalecidos e que a decisão final seja documentada e executada corretamente.</p>
+  <ul>
+    <li><strong>3.1 Incidente resolvido?</strong> – Avalia se as ações tomadas foram eficazes.</li>
+    <li><strong>3.2 Reforçar alertas SIEM</strong> – Aumenta a vigilância para detectar atividades suspeitas relacionadas.</li>
+    <li><strong>3.3 Auditoria de logs de autenticação</strong> – Permite identificar padrões e evidências do ataque.</li>
+    <li><strong>3.4 Correlação de eventos</strong> – Ajuda a entender o contexto e a origem do incidente.</li>
+    <li><strong>3.5 Reintegrar ou manter bloqueada</strong> – Decide o status final da conta com base na investigação.</li>
+    <ul class="sublist">
+      <li><strong>3.5(a) Documentar justificativa para bloqueio</strong> – Registra os motivos para manter a conta suspensa, garantindo transparência.</li>
+      <li><strong>3.5(b) Restaurar acesso normal</strong> – Permite que o usuário retome suas atividades com segurança.</li>
+    </ul>
+  </ul>
+</div>
 
-    <div class="step-box">
-      <h3>4. ENCERRAMENTO</h3>
-      <ul>
-        <li>Preenchimento do Registro de Evidências.</li>
-        <li>Exportação do Relatório Markdown para o Chamado.</li>
-        <li>Revisão de lições aprendidas e encerramento.</li>
-      </ul>
-    </div>
+<div class="step-box">
+  <h3>4. DIAGNÓSTICO</h3>
+  <p class="step-description">Serve para confirmar que a reintegração da conta é segura e que todas as conformidades técnicas e regulatórias foram atendidas.</p>
+  <p class="step-subinfo">(4.1 a 4.2) Esses passos garantem que a conta não represente mais risco e que o processo esteja alinhado com normas e políticas.</p>
+  <ul>
+    <li><strong>4.1 Validar reintegração segura</strong> – Confirma que a conta está livre de comprometimentos.</li>
+    <li><strong>4.2 Checar conformidade técnica e regulatória</strong> – Assegura que todas as exigências legais e técnicas foram cumpridas.</li>
+  </ul>
+</div>
+
+<div class="step-box">
+  <h3>5. RESPOSTA PÓS-INCIDENTE</h3>
+  <p class="step-description">Serve para aprender com o incidente para melhorar processos, treinar a equipe e reportar resultados.</p>
+  <p class="step-subinfo">(5.1 a 5.4) Esses passos promovem a melhoria contínua da segurança da informação e a preparação para futuros incidentes.</p>
+  <ul>
+    <li><strong>5.1 Documentar lições aprendidas</strong> – Registra aprendizados para evitar reincidência.</li>
+    <li><strong>5.2 Atualizar playbooks</strong> – Melhora os procedimentos de resposta.</li>
+    <li><strong>5.3 Treinar equipe</strong> – Prepara os profissionais para agir com eficiência.</li>
+    <li><strong>5.4 Reportar métricas e indicadores</strong> – Fornece dados para avaliação e tomada de decisão estratégica.</li>
+  </ul>
+</div>
 
     <button class="btn-fechar" id="btnFechar">FECHAR DETALHES</button>
   </div>
