@@ -1,240 +1,301 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fluxograma de Decisão - Resposta a Incidentes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #d3d3d3;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playbook de Resposta a Incidentes - Comprometimento de Contas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00001f;
+            --identity-blue: #0055aa;
+            --red: #070707;
+            --cyan: #67AB9F;
+            --blue-strong: #67AB9F;
+            --purple: #67AB9F;
+            --green: #67AB9F;
+            --gray-panel: #010138;
+        }
 
-    header {
-      width: 100%;
-      background-color: #666666;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-sizing: border-box;
-    }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: var(--dark-blue);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    header h1 {
-      color: white;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin: 0;
-      text-transform: uppercase;
-    }
+        /* Ícone Flutuante */
+        .osi-trigger {
+            position: fixed;
+            left: 20px;
+            top: 25px;
+            background-color: var(--identity-blue);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
 
-    .nav-buttons {
-      display: flex;
-      gap: 10px;
-    }
+        /* Modal */
+        .osi-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .osi-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 85%;
+            max-width: 900px;
+            max-height: 90%;
+            position: relative;
+            overflow-y: auto;
+            color: black;
+        }
+        .close-osi { position: absolute; top: 10px; right: 15px; color: #333; font-size: 30px; cursor: pointer; }
 
-    .btn-nav {
-      background-color: #424141;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-decoration: none;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-    }
+        /* Layout */
+        .viewport { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; }
+        .header-title { text-align: center; margin-bottom: 20px; text-transform: uppercase; }
 
-    .btn-nav:hover {
-      background-color: #4d4c4c;
-      color: #ffffff;
-    }
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            width: 90%;
+            max-width: 1200px;
+            color: black;
+            display: none; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            margin-bottom: 50px;
+        }
+        .active { display: block; }
 
-    .btn-registro {
-      background-color: #ffffff;
-      color: #333;
-    }
+        .img-container { width: 100%; text-align: center; margin-bottom: 20px; background: #eee; border-radius: 4px; padding: 10px 0; }
+        .img-container img { max-width: 100%; border-radius: 4px; }
 
-    .imagem-container {
-      margin: 30px auto;
-      max-width: 1100px;
-      width: 95%;
-      text-align: center;
-    }
+        .btn-details { display: inline-block; margin: 10px 5px; padding: 12px 30px; background-color: #222; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 700; text-transform: uppercase; }
+        .btn-back { background-color: #666; }
 
-    .imagem-container img {
-      width: 100%;
-      height: auto;
-      border-radius: 4px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      border: 1px solid #929191;
-    }
+        .extra-info { display: none; margin-top: 20px; border-top: 2px solid #eee; padding-top: 20px; text-align: left; }
+        .info-section { margin-bottom: 20px; }
+        .info-section h3 { border-left: 5px solid var(--identity-blue); padding-left: 10px; color: #333; margin-bottom: 10px; }
+        .info-section p { margin: 5px 0; line-height: 1.4; }
+        .info-section ul { padding-left: 20px; }
 
-    /* Menu popup */
-    .formatos-menu {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-      z-index: 2000;
-      max-width: 550px;
-      width: 90%;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-
-    .formatos-menu.active { display: block; }
-
-    .menu-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 1500;
-    }
-
-    .menu-overlay.active { display: block; }
-
-    .step-box {
-      background: #f9f9f9;
-      border-left: 5px solid #666666;
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 4px;
-    }
-
-    .step-box h3 { margin: 0 0 10px; font-size: 1.1rem; color: #000; }
-    .step-box ul { margin: 0; padding-left: 20px; font-size: 0.95rem; color: #444; line-height: 1.6; }
-
-    .btn-fechar {
-      background-color: #000;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-  </style>
+        /* Nav Bar */
+        .nav-bar { background-color: var(--gray-panel); display: flex; padding: 10px; gap: 10px; justify-content: center; }
+        .nav-btn { flex: 1; max-width: 200px; padding: 15px 5px; font-weight: 700; cursor: pointer; text-align: center; font-size: 11px; border: none; }
+        
+        .c-deteccao { background-color: #67AB9F; } 
+        .c-analise { background-color: var(--cyan); } 
+        .c-contencao { background-color: var(--blue-strong); color: rgb(0, 0, 0); } 
+        .c-recuperacao { background-color: var(--purple); } 
+        .c-pos { background-color: var(--green); }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>Fluxograma de Decisão</h1>
-    <div class="nav-buttons">
-        <button class="btn-nav" id="btnFormatos">≡ Ver Passos</button>
-        <a href="https://25fluxograma-playbook.github.io/formulario/" class="btn-nav btn-registro"> Registrar Incidente</a>
+    <div class="viewport">
+        <div class="header-title">
+            <h1>COMPROMETIMENTO DE CONTAS</h1>
+            <p>Fluxograma de Resposta a Incidentes</p>
+        </div>
+
+        <div id="principal" class="content-card active">
+            <h2 style="text-align: center;">FLUXOGRAMA GERAL</h2>
+            <div class="img-container"><img src="images/fluxo_principal_contas.jpg"></div>
+        </div>
+
+        <div id="fase1" class="content-card">
+            <h2 style="color: var(--red)">1. DETECÇÃO INICIAL</h2>
+            <div class="img-container"><img src="images/fluxo_fase1_contas.jpg"></div>
+            <div style="text-align:center;">
+                <button class="btn-details" onclick="toggleDetails('det1')">DETALHES ↓</button>
+                <button class="btn-details btn-back" onclick="showPhase('principal')">VOLTAR</button>
+            </div>
+            <div id="det1" class="extra-info">
+                <div class="info-section">
+                    <h3>O que é</h3>
+                    <p>Primeira resposta ao possível incidente. Envolve identificar, classificar, registrar e preservar evidências, além de notificar a equipe.</p>
+                </div>
+                <div class="info-section">
+                    <h3>Como mitigar</h3>
+                    <ul>
+                        <li>Treinamento contínuo para que colaboradores reconheçam sinais de incidentes.</li>
+                        <li>Automatização da detecção com sistemas de monitoramento.</li>
+                        <li>Procedimentos claros para registro e preservação de evidências.</li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h3>Ferramentas sugeridas</h3>
+                    <p><strong>SIEM (ex: Splunk, QRadar, ELK):</strong> para monitoramento e correlação de eventos.</p>
+                    <p><strong>Ticketing systems (ex: Jira, ServiceNow):</strong> para registro e rastreamento.</p>
+                    <p><strong>EDR (ex: CrowdStrike, SentinelOne):</strong> para preservar evidências e bloquear ameaças.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="fase2" class="content-card">
+            <h2 style="color: #008b8b">2. AVALIAÇÃO DE RISCO</h2>
+            <div class="img-container"><img src="images/fluxo_fase2_contas.jpg"></div>
+            <div style="text-align:center;">
+                <button class="btn-details" onclick="toggleDetails('det2')">DETALHES ↓</button>
+                <button class="btn-details btn-back" onclick="showPhase('principal')">VOLTAR</button>
+            </div>
+            <div id="det2" class="extra-info">
+                <div class="info-section">
+                    <h3>O que é</h3>
+                    <p>Análise preliminar do incidente para confirmar se há ameaça real e definir o nível de risco.</p>
+                </div>
+                <div class="info-section">
+                    <h3>Como mitigar</h3>
+                    <ul>
+                        <li>Modelos de classificação de risco bem definidos.</li>
+                        <li>Playbooks de resposta para diferentes tipos de ameaça.</li>
+                        <li>Monitoramento contínuo para casos não confirmados.</li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h3>Ferramentas sugeridas</h3>
+                    <p><strong>Risk assessment frameworks:</strong> ex: NIST, ISO 27005.</p>
+                    <p><strong>Threat intelligence platforms:</strong> ex: MISP, Recorded Future.</p>
+                    <p><strong>SOAR (ex: Palo Alto Cortex XSOAR):</strong> para automatizar decisões e notificações.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="fase3" class="content-card">
+            <h2 style="color: var(--blue-strong)">3. COMUNICAÇÃO E INVESTIGAÇÃO</h2>
+            <div class="img-container"><img src="images/fluxo_fase3_contas.jpg"></div>
+            <div style="text-align:center;">
+                <button class="btn-details" onclick="toggleDetails('det3')">DETALHES ↓</button>
+                <button class="btn-details btn-back" onclick="showPhase('principal')">VOLTAR</button>
+            </div>
+            <div id="det3" class="extra-info">
+                <div class="info-section">
+                    <h3>O que é</h3>
+                    <p>Confirmação da ameaça e investigação detalhada. Inclui comunicação com stakeholders e decisão sobre contenção ou reintegração.</p>
+                </div>
+                <div class="info-section">
+                    <h3>Como mitigar</h3>
+                    <ul>
+                        <li>Procedimentos de comunicação interna e externa bem definidos.</li>
+                        <li>Equipe de resposta a incidentes treinada.</li>
+                        <li>Logs e evidências bem preservadas para investigação.</li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h3>Ferramentas sugeridas</h3>
+                    <p><strong>Forense digital:</strong> ex: Autopsy, FTK, EnCase.</p>
+                    <p><strong>Plataformas de comunicação segura:</strong> ex: Mattermost, Signal.</p>
+                    <p><strong>SOAR e SIEM:</strong> para centralizar dados e coordenar ações.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="fase4" class="content-card">
+            <h2 style="color: #8a2be2">4. DIAGNÓSTICO</h2>
+            <div class="img-container"><img src="images/fluxo_fase4_contas.jpg"></div>
+            <div style="text-align:center;">
+                <button class="btn-details" onclick="toggleDetails('det4')">DETALHES ↓</button>
+                <button class="btn-details btn-back" onclick="showPhase('principal')">VOLTAR</button>
+            </div>
+            <div id="det4" class="extra-info">
+                <div class="info-section">
+                    <h3>O que é</h3>
+                    <p>Identificação da causa raiz do incidente e documentação técnica do diagnóstico.</p>
+                </div>
+                <div class="info-section">
+                    <h3>Como mitigar</h3>
+                    <ul>
+                        <li>Análise de causa raiz (RCA) estruturada.</li>
+                        <li>Revisão de controles e políticas após diagnóstico.</li>
+                        <li>Compartilhamento de lições aprendidas com a equipe.</li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h3>Ferramentas sugeridas</h3>
+                    <p><strong>RCA templates:</strong> ex: 5 Whys, Ishikawa.</p>
+                    <p><strong>Ferramentas de análise de logs:</strong> ex: Graylog, Kibana.</p>
+                    <p><strong>Documentação colaborativa:</strong> ex: Confluence, Google Docs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="fase5" class="content-card">
+            <h2 style="color: var(--green)">5. RESPOSTA PÓS-INCIDENTE</h2>
+            <div class="img-container"><img src="images/fluxo_fase5_contas.jpg"></div>
+            <div style="text-align:center;">
+                <button class="btn-details" onclick="toggleDetails('det5')">DETALHES ↓</button>
+                <button class="btn-details btn-back" onclick="showPhase('principal')">VOLTAR</button>
+            </div>
+            <div id="det5" class="extra-info">
+                <div class="info-section">
+                    <h3>O que é</h3>
+                    <p>Encerramento formal do incidente, comunicação final, relatório, atualização de controles e arquivamento.</p>
+                </div>
+                <div class="info-section">
+                    <h3>Como mitigar</h3>
+                    <ul>
+                        <li>Revisão de políticas e procedimentos com base no incidente.</li>
+                        <li>Atualização de controles técnicos e administrativos.</li>
+                        <li>Auditorias regulares para verificar eficácia das mudanças.</li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h3>Ferramentas sugeridas</h3>
+                    <p><strong>GRC platforms:</strong> ex: RSA Archer, MetricStream.</p>
+                    <p><strong>Ferramentas de documentação e relatórios:</strong> ex: Power BI, Google Docs.</p>
+                    <p><strong>Versionamento de políticas:</strong> ex: Git, SharePoint.</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <div class="imagem-container">
-    <img src="images/fluxograma2.jpg" alt="Fluxograma de Decisão">
-  </div>
+    <div class="nav-bar">
+        <button class="nav-btn c-deteccao" onclick="showPhase('fase1')">1. DETECÇÃO</button>
+        <button class="nav-btn c-analise" onclick="showPhase('fase2')">2. ANÁLISE</button>
+        <button class="nav-btn c-contencao" onclick="showPhase('fase3')">3. COMUNICAÇÃO</button>
+        <button class="nav-btn c-recuperacao" onclick="showPhase('fase4')">4. DIAGNÓSTICO</button>
+        <button class="nav-btn c-pos" onclick="showPhase('fase5')">5. PÓS-INCIDENTE</button>
+    </div>
 
-  <div class="menu-overlay" id="menuOverlay"></div>
+    <script>
+        function showPhase(id) {
+            document.querySelectorAll('.content-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.extra-info').forEach(i => i.style.display = 'none');
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
+            document.querySelector('.viewport').scrollTop = 0;
+        }
 
-  <div class="formatos-menu" id="formatosMenu">
-    <h2 style="margin-top:0; border-bottom: 2px solid #666; padding-bottom: 10px;">Guia de Execução</h2>
-
-  <div class="step-box">
-  <h3>1. DETECÇÃO INICIAL</h3>
-  <p class="step-description">Serve para identificar rapidamente sinais de comprometimento da conta, permitindo uma resposta imediata para minimizar danos.</p>
-  <p class="step-subinfo">(1.1 a 1.5) Esses passos auxiliam na identificação precoce do incidente, bloqueando o acesso não autorizado, preservando evidências essenciais para investigação e monitorando tentativas suspeitas para evitar novas invasões.</p>
-  <ul>
-    <li><strong>1.1 Alerta de comprometimento de Conta</strong> – Detecta o possível início do incidente, acionando o processo de resposta.</li>
-    <li><strong>1.2 Bloqueio imediato da conta</strong> – Impede o uso continuado da conta comprometida, limitando o alcance do ataque.</li>
-    <li><strong>1.3 Forçar logout de sessões ativas</strong> – Encerra acessos ativos que podem estar sendo usados pelo invasor.</li>
-    <li><strong>1.4 Preservar evidências de autenticação</strong> – Garante que informações críticas para análise forense sejam mantidas intactas.</li>
-    <li><strong>1.5 Monitorar tentativas de login</strong> – Permite identificar tentativas adicionais de acesso não autorizado.</li>
-  </ul>
-</div>
-
-<div class="step-box">
-  <h3>2. AVALIAÇÃO DE RISCO</h3>
-  <p class="step-description">Serve para avaliar o impacto e o risco associado ao incidente para definir as ações mais adequadas de contenção e mitigação.</p>
-  <p class="step-subinfo">(2.1 a 2.4) Esses passos ajudam a entender a gravidade do incidente, o potencial de propagação e a necessidade de suspender ou não a conta, além de garantir comunicação adequada com os responsáveis.</p>
-  <ul>
-    <li><strong>2.1 Avaliar impacto e privilégio da conta</strong> – Determina o potencial dano que o comprometimento pode causar.</li>
-    <li><strong>2.2 Risco de propagação imediata?</strong> – Avalia se o incidente pode se espalhar rapidamente, influenciando a decisão de suspender a conta.</li>
-    <ul class="sublist">
-      <li><strong>2.2(a) Manter a conta suspensa</strong> – Contém o incidente evitando sua expansão.</li>
-      <li><strong>2.2(b) Não suspender a conta</strong> – Evita interrupções desnecessárias quando o risco é baixo.</li>
-      <li><strong>2.2(c) Reset imediato de credenciais</strong> – Restaura a segurança da conta comprometida.</li>
-    </ul>
-    <li><strong>2.3 Notificar responsável pela conta</strong> – Garante que o dono da conta esteja ciente e possa colaborar na resolução.</li>
-    <li><strong>2.4 Aguardar validação e feedback DSinf</strong> – Permite que a equipe de segurança valide as ações e ajuste o plano conforme necessário.</li>
-  </ul>
-</div>
-
-<div class="step-box">
-  <h3>3. COMUNICAÇÃO E INVESTIGAÇÃO</h3>
-  <p class="step-description">Serve para investigar o incidente, reforçar controles e decidir sobre a resolução ou manutenção da suspensão da conta.</p>
-  <p class="step-subinfo">(3.1 a 3.5) Esses passos asseguram que o incidente seja devidamente analisado, que os controles sejam fortalecidos e que a decisão final seja documentada e executada corretamente.</p>
-  <ul>
-    <li><strong>3.1 Incidente resolvido?</strong> – Avalia se as ações tomadas foram eficazes.</li>
-    <li><strong>3.2 Reforçar alertas SIEM</strong> – Aumenta a vigilância para detectar atividades suspeitas relacionadas.</li>
-    <li><strong>3.3 Auditoria de logs de autenticação</strong> – Permite identificar padrões e evidências do ataque.</li>
-    <li><strong>3.4 Correlação de eventos</strong> – Ajuda a entender o contexto e a origem do incidente.</li>
-    <li><strong>3.5 Reintegrar ou manter bloqueada</strong> – Decide o status final da conta com base na investigação.</li>
-    <ul class="sublist">
-      <li><strong>3.5(a) Documentar justificativa para bloqueio</strong> – Registra os motivos para manter a conta suspensa, garantindo transparência.</li>
-      <li><strong>3.5(b) Restaurar acesso normal</strong> – Permite que o usuário retome suas atividades com segurança.</li>
-    </ul>
-  </ul>
-</div>
-
-<div class="step-box">
-  <h3>4. DIAGNÓSTICO</h3>
-  <p class="step-description">Serve para confirmar que a reintegração da conta é segura e que todas as conformidades técnicas e regulatórias foram atendidas.</p>
-  <p class="step-subinfo">(4.1 a 4.2) Esses passos garantem que a conta não represente mais risco e que o processo esteja alinhado com normas e políticas.</p>
-  <ul>
-    <li><strong>4.1 Validar reintegração segura</strong> – Confirma que a conta está livre de comprometimentos.</li>
-    <li><strong>4.2 Checar conformidade técnica e regulatória</strong> – Assegura que todas as exigências legais e técnicas foram cumpridas.</li>
-  </ul>
-</div>
-
-<div class="step-box">
-  <h3>5. RESPOSTA PÓS-INCIDENTE</h3>
-  <p class="step-description">Serve para aprender com o incidente para melhorar processos, treinar a equipe e reportar resultados.</p>
-  <p class="step-subinfo">(5.1 a 5.4) Esses passos promovem a melhoria contínua da segurança da informação e a preparação para futuros incidentes.</p>
-  <ul>
-    <li><strong>5.1 Documentar lições aprendidas</strong> – Registra aprendizados para evitar reincidência.</li>
-    <li><strong>5.2 Atualizar playbooks</strong> – Melhora os procedimentos de resposta.</li>
-    <li><strong>5.3 Treinar equipe</strong> – Prepara os profissionais para agir com eficiência.</li>
-    <li><strong>5.4 Reportar métricas e indicadores</strong> – Fornece dados para avaliação e tomada de decisão estratégica.</li>
-  </ul>
-</div>
-
-    <button class="btn-fechar" id="btnFechar">FECHAR DETALHES</button>
-  </div>
-
-  <script>
-    const btnFormatos = document.getElementById('btnFormatos');
-    const formatosMenu = document.getElementById('formatosMenu');
-    const menuOverlay = document.getElementById('menuOverlay');
-    const btnFechar = document.getElementById('btnFechar');
-
-    function toggleMenu(show) {
-      formatosMenu.classList.toggle('active', show);
-      menuOverlay.classList.toggle('active', show);
-    }
-
-    btnFormatos.addEventListener('click', () => toggleMenu(true));
-    btnFechar.addEventListener('click', () => toggleMenu(false));
-    menuOverlay.addEventListener('click', () => toggleMenu(false));
-  </script>
-
+        function toggleDetails(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            if(el.style.display === 'block') el.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
