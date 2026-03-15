@@ -16,6 +16,7 @@
             --orange: #DB832B;
             --blue: #6666FF;
             --green: #28CC28;
+            --light-blue: #4A90E2;
             --purple: #8A2BE2;
             --gray-panel: #00001f;
             --table: #555550;
@@ -184,9 +185,10 @@
         .c3 { background-color: var(--red); }
         .c4 { background-color: #E0493E; }
         .c5 { background-color: var(--blue); }
-        .c6 { background-color: var(--blue); }
+        .c6 { background-color: var(--light-blue); }
+        .c7 { background-color: var(--purple); }
         
-
+        /* Container padrão para imagens (com fundo cinza) */
         .img-container { 
             width: 100%; 
             text-align: center; 
@@ -194,7 +196,18 @@
             background: #eee; 
             padding: 10px 0; 
         }
-        .img-container img { 
+        
+        /* Container específico para GIFs (sem fundo) */
+        .img-container-gif {
+            width: 100%; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            background: transparent; 
+            padding: 0;
+        }
+        
+        .img-container img, 
+        .img-container-gif img { 
             max-width: 100%; 
             height: auto; 
         }
@@ -320,6 +333,24 @@
                 min-width: 200px;
             }
         }
+
+        /* Estilo para badges de fase */
+        .phase-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .badge-recuperacao { background-color: var(--light-blue); }
+        .badge-pos { background-color: var(--purple); }
+        .badge-deteccao { background-color: var(--orange); }
+        .badge-preparacao { background-color: var(--green); }
+        .badge-contencao { background-color: #E0493E; }
+        .badge-erradicacao { background-color: var(--blue); }
+        .badge-analise { background-color: var(--red); }
+        
     </style>
 </head>
 <body>
@@ -353,6 +384,9 @@
             <a href="#" class="pdf-item" onclick="downloadPDF('fase6')">
                 <i class="fas fa-download"></i> Recuperação
             </a>
+            <a href="#" class="pdf-item" onclick="downloadPDF('fase7')">
+                <i class="fas fa-download"></i> Pós-Incidente
+            </a>
             <a href="#" class="pdf-item" onclick="downloadPDF('completo')">
                 <i class="fas fa-download"></i> Guia Completo
             </a>
@@ -367,8 +401,13 @@
             <div class="phase-title">
                 <h2 style="color: var(--dark-blue)">Visão Geral</h2>
             </div>
+            <!-- Container com fundo cinza para a imagem PNG -->
             <div class="img-container">
                 <img src="images/contas.png" alt="Fluxograma Comprometimento de Contas">
+            </div>
+            <!-- Container transparente para o GIF -->
+            <div class="img-container-gif">
+                <img src="images/logo.gif" alt="Logo Animado">
             </div>
             <p style="text-align: center; font-size: 1.1em; margin-top: 20px;">
                 Selecione uma fase abaixo para ver os detalhes do procedimento de tratamento de incidentes de comprometimento de contas.
@@ -385,7 +424,12 @@
 
         <div id="fase1" class="content-card">
             <div class="phase-title">
-                <h2 style="color: var(--green)">Fase 1: Preparação</h2>
+                <h2 style="color: var(--green)">Fase 1</h2>
+                <span class="phase-badge badge-preparacao">Prontidão para Resposta</span>
+            </div>
+            <div class="img-container">
+                <img src="images/preparacao.png" alt="Fluxograma da Fase de Preparação">
+                
             </div>
             <p>A fase de preparação estabelece os controles preventivos para evitar comprometimento de contas e preparar a equipe para resposta rápida.</p>
             
@@ -442,25 +486,25 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong style="color: red;">CRÍTICO</strong></td>
+                            <td><strong style="color: rgb(216, 3, 3);">CRÍTICO</strong></td>
                             <td>Administrador Global, Acesso a Dados Sensíveis</td>
                             <td>Paralisia total, Vazamento de dados massivo</td>
                             <td>Bloqueio imediato (minutos)</td>
                         </tr>
                         <tr>
-                            <td><strong style="color: orange;">ALTO</strong></td>
+                            <td><strong style="color: rgb(255, 125, 4);">ALTO</strong></td>
                             <td>Contas com acesso a sistemas produtivos (SIE/Moodle)</td>
                             <td>Interrupção de serviços acadêmicos</td>
                             <td>Suspensão da conta (até 30 min)</td>
                         </tr>
                         <tr>
-                            <td><strong style="color: yellow;">MÉDIO</strong></td>
+                            <td><strong style="color: #FFD700;">MÉDIO</strong></td>
                             <td>Usuário padrão com atividade suspeita</td>
                             <td>Acesso indevido a dados pessoais</td>
                             <td>Análise de logs (até 2 horas)</td>
                         </tr>
                         <tr>
-                            <td><strong style="color: green;">BAIXO</strong></td>
+                            <td><strong style="color: rgb(2, 180, 2);">BAIXO</strong></td>
                             <td>Tentativas de força bruta sem sucesso</td>
                             <td>Risco mínimo, alerta preventivo</td>
                             <td>Monitoramento (até 4 horas)</td>
@@ -472,7 +516,11 @@
 
         <div id="fase2" class="content-card">
             <div class="phase-title">
-                <h2 style="color: var(--orange)">Fase 2: Detecção</h2>
+                <h2 style="color: var(--orange)">Fase 2</h2>
+                <span class="phase-badge badge-deteccao">Avalia o Comprometimento</span>
+            </div>
+            <div class="img-container">
+                <img src="images/deteccao.png" alt="Fluxograma da Fase de Detecção">
             </div>
             <p>Identificação de atividades suspeitas que indicam possível comprometimento de conta.</p>
             
@@ -543,7 +591,11 @@
 
         <div id="fase3" class="content-card">
             <div class="phase-title">
-                <h2 style="color: var(--red)">Fase 3: Análise</h2>
+                <h2 style="color: var(--red)">Fase 3</h2>
+                <span class="phase-badge badge-analise">Avalia o Escopo</span>
+            </div>
+            <div class="img-container">
+                <img src="images/analise.png" alt="Fluxograma da Fase de Análise">
             </div>
             <p>Determinação da profundidade do comprometimento, serviços acessados, tática do invasor e origem do ataque.</p>
             
@@ -624,7 +676,11 @@
 
         <div id="fase4" class="content-card">
             <div class="phase-title">
-                <h2 style="color: #E0493E">Fase 4: Contenção</h2>
+                <h2 style="color: #E0493E">Fase 4</h2>
+                <span class="phase-badge badge-contencao">Impede o Comprometimento</span>
+            </div>
+            <div class="img-container">
+                <img src="images/contencao.png" alt="Fluxograma da Fase de Contenção">
             </div>
             <p>Ações imediatas para limitar o dano e impedir a propagação do comprometimento.</p>
             
@@ -644,7 +700,7 @@
                     <tbody>
                         <tr>
                             <td>Conta administrativa ou acesso a dados sensíveis</td>
-                            <td><strong style="color: red;">Imediato (Minutos)</strong></td>
+                            <td><strong style="color: rgb(226, 1, 1);">Imediato (Minutos)</strong></td>
                             <td>
                                 <ul>
                                     <li>Bloqueio total da conta</li>
@@ -656,7 +712,7 @@
                         </tr>
                         <tr>
                             <td>Conta com acesso a sistemas produtivos com atividade maliciosa</td>
-                            <td><strong style="color: orange;">Até 30 Minutos</strong></td>
+                            <td><strong style="color: rgb(255, 136, 0);">Até 30 Minutos</strong></td>
                             <td>
                                 <ul>
                                     <li>Suspensão da conta</li>
@@ -668,7 +724,7 @@
                         </tr>
                         <tr>
                             <td>Conta de usuário padrão com suspeita de comprometimento</td>
-                            <td><strong style="color: yellow;">Até 2 Horas</strong></td>
+                            <td><strong style="color: #FFD700;">Até 2 Horas</strong></td>
                             <td>
                                 <ul>
                                     <li>Análise de logs para padrões de acesso</li>
@@ -676,7 +732,7 @@
                                     <li>Revisão de métodos MFA</li>
                                 </ul>
                             </td>
-                            <td><span style="background-color: yellow; color: black; padding: 3px 8px; border-radius: 10px;">BAIXA</span></td>
+                            <td><span style="background-color: #FFD700; color: black; padding: 3px 8px; border-radius: 10px;">BAIXA</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -714,7 +770,7 @@
                     </div>
                 </div>
 
-                <div style="background-color: #ffebee; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid red;">
+                <div style="background-color: #ffebee; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid rgb(230, 1, 1);">
                     <h5>⚠️ ATENÇÃO: Ações a EVITAR durante a contenção</h5>
                     <ul>
                         <li><strong>Não</strong> comunicar o invasor sobre a detecção</li>
@@ -728,7 +784,11 @@
 
         <div id="fase5" class="content-card">
             <div class="phase-title">
-                <h2 style="color: var(--blue)">Fase 5: Erradicação</h2>
+                <h2 style="color: var(--blue)">Fase 5</h2>
+                <span class="phase-badge badge-erradicacao">Remove o Agente Malicioso</span>
+            </div>
+            <div class="img-container">
+                <img src="images/erradicacao.png" alt="Fluxograma da Fase de Erradicação">
             </div>
             <p>Remoção completa da ameaça e correção dos pontos vulneráveis explorados.</p>
             
@@ -841,9 +901,13 @@
 
         <div id="fase6" class="content-card">
             <div class="phase-title">
-                <h2 style="color: var(--blue)">Fase 6: Recuperação e Pós-Incidente</h2>
+                <h2 style="color: var(--light-blue)">Fase 6</h2>
+                <span class="phase-badge badge-recuperacao">Restauração e Segurança</span>
             </div>
-            <p>Restauração segura da conta e aprendizado para melhorias futuras.</p>
+            <div class="img-container">
+                <img src="images/recuperacao.png" alt="Fluxograma da Fase de Recuperação">
+            </div>
+            <p>Restauração segura da conta e retorno controlado às operações normais.</p>
             
             <button class="btn-details" onclick="toggleDetails('d6')">VER PROCESSO DE RECUPERAÇÃO ↓</button>
             <div id="d6" class="extra-info">
@@ -892,45 +956,135 @@
                     <ul>
                         <li><strong>Telefone verificado:</strong> Ligação para número cadastrado</li>
                         <li><strong>Presencialmente no CPD:</strong> Apresentação de documento com foto</li>
-                        <li><strong>Canal alternativo:</strong> Aplicativo de mensagens verificada</li>
+                        <li><strong>Canal alternativo:</strong> Aplicativo de mensagens verificado</li>
                         <li><strong>NÃO usar e-mail:</strong> Se foi o vetor original do ataque</li>
                     </ul>
                 </div>
 
-                <h4>Pós-Incidente e Conformidade</h4>
+                <h4>Restauração Progressiva de Acessos</h4>
+                <div style="background-color: #fff3e0; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <h5>📊 Níveis de Acesso Progressivo:</h5>
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 100px; background-color: #4CAF50; color: white; padding: 5px; border-radius: 5px; text-align: center;">Nível 1</div>
+                            <div style="margin-left: 20px;">Acesso básico (e-mail, sistemas não críticos) - 24h após validação</div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 100px; background-color: #FF9800; color: white; padding: 5px; border-radius: 5px; text-align: center;">Nível 2</div>
+                            <div style="margin-left: 20px;">Acesso a sistemas produtivos - 48h após Nível 1 sem incidentes</div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 100px; background-color: #f44336; color: white; padding: 5px; border-radius: 5px; text-align: center;">Nível 3</div>
+                            <div style="margin-left: 20px;">Acesso administrativo total - 7 dias após Nível 2 sem incidentes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="fase7" class="content-card">
+            <div class="phase-title">
+                <h2 style="color: var(--purple)">Fase 7</h2>
+                <span class="phase-badge badge-pos">Aprendizado e Melhoria para o Futuro</span>
+            </div>
+            <div class="img-container">
+                <img src="images/posincidente.png" alt="Fluxograma da Fase Pós-Incidente">
+            </div>
+            <p>Análise do incidente, documentação, lições aprendidas e implementação de melhorias.</p>
+            
+            <button class="btn-details" onclick="toggleDetails('d7')">VER PROCESSO PÓS-INCIDENTE ↓</button>
+            <div id="d7" class="extra-info">
+                <h3>DOCUMENTAÇÃO E ANÁLISE DO INCIDENTE</h3>
+                
+                <table class="tabela-evidencias">
+                    <thead>
+                        <tr>
+                            <th>ATIVIDADE</th>
+                            <th>DESCRIÇÃO</th>
+                            <th>RESPONSÁVEL</th>
+                            <th>PRAZO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Documentação Completa</strong></td>
+                            <td>Registrar desde a primeira falha de autenticação até a recuperação</td>
+                            <td>Analista de Segurança</td>
+                            <td>48 horas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reunião Pós-Mortem</strong></td>
+                            <td>Análise crítica do incidente com todos os envolvidos</td>
+                            <td>Coordenador de Segurança</td>
+                            <td>72 horas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Identificação de Melhorias</strong></td>
+                            <td>Listar pontos de melhoria nos processos e controles</td>
+                            <td>Equipe Técnica</td>
+                            <td>5 dias</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Atualização de Playbooks</strong></td>
+                            <td>Incorporar lições aprendidas nos procedimentos</td>
+                            <td>Gestão de Incidentes</td>
+                            <td>10 dias</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Relatório Final</strong></td>
+                            <td>Elaborar relatório completo para auditoria e conformidade</td>
+                            <td>Comitê de Segurança</td>
+                            <td>15 dias</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Lições Aprendidas e Melhorias</h4>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
-                    <div style="background-color: #f3e5f5; padding: 20px; border-radius: 8px;">
-                        <h5>📄 Documentação do Incidente</h5>
+                    <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px;">
+                        <h5>✅ O QUE FUNCIONOU BEM</h5>
                         <ul>
-                            <li>Registrar desde a primeira falha de autenticação</li>
-                            <li>Documentar todas as ações tomadas</li>
-                            <li>Criar linha do tempo completa do evento</li>
-                            <li>Preservar evidências para fins legais</li>
+                            <li>Detecção rápida via alertas de localização anômala</li>
+                            <li>Bloqueio imediato da conta comprometida</li>
+                            <li>Comunicação eficiente entre equipes</li>
+                            <li>Preservação adequada de evidências</li>
                         </ul>
                     </div>
                     
-                    <div style="background-color: #e1f5fe; padding: 20px; border-radius: 8px;">
-                        <h5>🔄 Atualização de Processos</h5>
+                    <div style="background-color: #ffebee; padding: 20px; border-radius: 8px;">
+                        <h5>⚠️ O QUE PRECISA MELHORAR</h5>
                         <ul>
-                            <li>Revisar privilégios e requisitos de senha</li>
-                            <li>Avaliar eficácia do MFA</li>
-                            <li>Atualizar playbooks com lições aprendidas</li>
-                            <li>Revisar treinamentos de conscientização</li>
-                        </ul>
-                    </div>
-                    
-                    <div style="background-color: #f1f8e9; padding: 20px; border-radius: 8px;">
-                        <h5>🏛️ Conformidade Normativa</h5>
-                        <ul>
-                            <li><strong>LGPD:</strong> Proteção de dados pessoais</li>
-                            <li><strong>ISO/IEC 27001:</strong> Gestão de segurança da informação</li>
-                            <li><strong>Política de Segurança UFRGS:</strong> Alinhamento institucional</li>
-                            <li><strong>NIST SP 800-61:</strong> Resposta a incidentes</li>
+                            <li>Tempo de resposta na análise de logs</li>
+                            <li>Processo de entrega de novas credenciais</li>
+                            <li>Treinamento de usuários sobre phishing</li>
+                            <li>Automação de revogação de tokens</li>
                         </ul>
                     </div>
                 </div>
 
-                <h4>Plano de Ação Pós-Incidente</h4>
+                <h4>Conformidade Normativa</h4>
+                <div style="background-color: #f3e5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div>
+                            <h5>📋 LGPD</h5>
+                            <p>Garantir proteção de dados pessoais e notificação à ANPD se necessário</p>
+                        </div>
+                        <div>
+                            <h5>🔒 ISO 27001</h5>
+                            <p>Revisar controles A.9 (Controle de Acesso) e A.16 (Gestão de Incidentes)</p>
+                        </div>
+                        <div>
+                            <h5>🏛️ Política UFRGS</h5>
+                            <p>Alinhamento com normas institucionais de segurança</p>
+                        </div>
+                        <div>
+                            <h5>📊 NIST 800-61</h5>
+                            <p>Aplicar boas práticas de resposta a incidentes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Plano de Ação e Melhorias</h4>
                 <table class="tabela-evidencias">
                     <thead>
                         <tr>
@@ -960,13 +1114,40 @@
                             <td><span style="background-color: #2196F3; color: white; padding: 3px 8px; border-radius: 10px;">PENDENTE</span></td>
                         </tr>
                         <tr>
-                            <td>Revisar e otimizar políticas de Acesso Condicional</td>
-                            <td>Equipe IAM</td>
-                            <td>15 dias</td>
+                            <td>Automatizar revogação de tokens em incidentes críticos</td>
+                            <td>Equipe de Automação</td>
+                            <td>45 dias</td>
                             <td><span style="background-color: #FF9800; color: white; padding: 3px 8px; border-radius: 10px;">EM ANDAMENTO</span></td>
+                        </tr>
+                        <tr>
+                            <td>Criar dashboard de métricas de resposta a incidentes</td>
+                            <td>BI/Segurança</td>
+                            <td>90 dias</td>
+                            <td><span style="background-color: #2196F3; color: white; padding: 3px 8px; border-radius: 10px;">PENDENTE</span></td>
                         </tr>
                     </tbody>
                 </table>
+
+                <h4>Métricas e Indicadores</h4>
+                <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center;">
+                        <div>
+                            <h3 style="color: var(--dark-blue); font-size: 2em;">MTTD</h3>
+                            <p><strong>Mean Time to Detect</strong></p>
+                            <p>2.5 horas</p>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--dark-blue); font-size: 2em;">MTTR</h3>
+                            <p><strong>Mean Time to Respond</strong></p>
+                            <p>1.8 horas</p>
+                        </div>
+                        <div>
+                            <h3 style="color: var(--dark-blue); font-size: 2em;">MTTC</h3>
+                            <p><strong>Mean Time to Contain</strong></p>
+                            <p>0.5 horas</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -978,6 +1159,7 @@
         <button class="nav-btn c4" onclick="showPhase('fase4')">Contenção</button>
         <button class="nav-btn c5" onclick="showPhase('fase5')">Erradicação</button>
         <button class="nav-btn c6" onclick="showPhase('fase6')">Recuperação</button>
+        <button class="nav-btn c7" onclick="showPhase('fase7')">Pós-Incidente</button>
     </div>
 
     <script>
@@ -1046,6 +1228,7 @@
                 'fase4': 'Contenção',
                 'fase5': 'Erradicação',
                 'fase6': 'Recuperação',
+                'fase7': 'Pós-Incidente',
                 'completo': 'Guia Completo'
             };
             
@@ -1110,7 +1293,7 @@
                     '- Restauração Progressiva',
                     '- Monitoramento Pós-Recuperação',
                     '',
-                    'PÓS-INCIDENTE',
+                    'FASE 7: PÓS-INCIDENTE',
                     '- Documentação do Incidente',
                     '- Identificação de Melhorias',
                     '- Atualização de Processos',
@@ -1219,10 +1402,10 @@
                         '- Session Hijacking: Revogar cookies, timeout curto'
                     ],
                     'fase6': [
-                        'FASE 6: RECUPERAÇÃO E PÓS-INCIDENTE',
+                        'FASE 6: RECUPERAÇÃO',
                         '',
-                        'Restauração segura da conta e aprendizado',
-                        'para melhorias futuras.',
+                        'Restauração segura da conta e retorno controlado',
+                        'às operações normais.',
                         '',
                         'TESTES DE VALIDAÇÃO:',
                         '1. Acesso com Novas Credenciais - SIE/Moodle',
@@ -1237,11 +1420,39 @@
                         '- Canal alternativo',
                         '- NÃO usar e-mail (se foi vetor)',
                         '',
-                        'CONFORMIDADE:',
-                        '- LGPD (Lei 13.709/2018)',
-                        '- ISO/IEC 27001',
-                        '- Política de Segurança UFRGS',
-                        '- NIST SP 800-61'
+                        'RESTAURAÇÃO PROGRESSIVA:',
+                        '- Nível 1: Acesso básico (24h)',
+                        '- Nível 2: Sistemas produtivos (48h)',
+                        '- Nível 3: Acesso administrativo (7 dias)'
+                    ],
+                    'fase7': [
+                        'FASE 7: PÓS-INCIDENTE',
+                        '',
+                        'Análise do incidente, documentação, lições aprendidas',
+                        'e implementação de melhorias.',
+                        '',
+                        'DOCUMENTAÇÃO E ANÁLISE:',
+                        '1. Documentação Completa - 48h',
+                        '2. Reunião Pós-Mortem - 72h',
+                        '3. Identificação de Melhorias - 5 dias',
+                        '4. Atualização de Playbooks - 10 dias',
+                        '5. Relatório Final - 15 dias',
+                        '',
+                        'LIÇÕES APRENDIDAS:',
+                        '- O que funcionou bem',
+                        '- O que precisa melhorar',
+                        '- Ações corretivas',
+                        '',
+                        'CONFORMIDADE NORMATIVA:',
+                        '- LGPD - Proteção de dados',
+                        '- ISO 27001 - Controles de segurança',
+                        '- Política UFRGS - Normas institucionais',
+                        '- NIST 800-61 - Boas práticas',
+                        '',
+                        'MÉTRICAS:',
+                        '- MTTD (Mean Time to Detect): 2.5 horas',
+                        '- MTTR (Mean Time to Respond): 1.8 horas',
+                        '- MTTC (Mean Time to Contain): 0.5 horas'
                     ]
                 };
                 
